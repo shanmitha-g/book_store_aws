@@ -1,0 +1,262 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  UserPoolId:
+    Type: String
+    Description: Cognito User Pool ID
+  UserPoolClientId:
+    Type: String
+    Description: Cognito App Client ID
+  SESFromEmail:
+    Type: String
+    Description: SES verified email address
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    Environment:
+      Variables:
+        USER_POOL_ID:
+          Ref: UserPoolId
+Resources:
+  BooksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Books
+      AttributeDefinitions:
+      - AttributeName: bookId
+        AttributeType: S
+      - AttributeName: genre
+        AttributeType: S
+      KeySchema:
+      - AttributeName: bookId
+        KeyType: HASH
+      GlobalSecondaryIndexes:
+      - IndexName: GenreIndex
+        KeySchema:
+        - AttributeName: genre
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+  ReviewsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Reviews
+      AttributeDefinitions:
+      - AttributeName: reviewId
+        AttributeType: S
+      - AttributeName: bookId
+        AttributeType: S
+      - AttributeName: userId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: reviewId
+        KeyType: HASH
+      GlobalSecondaryIndexes:
+      - IndexName: BookIndex
+        KeySchema:
+        - AttributeName: bookId
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+      - IndexName: UserIndex
+        KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+  ReservationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Reservations
+      AttributeDefinitions:
+      - AttributeName: reservationId
+        AttributeType: S
+      - AttributeName: userId
+        AttributeType: S
+      - AttributeName: bookId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: reservationId
+        KeyType: HASH
+      GlobalSecondaryIndexes:
+      - IndexName: UserIndex
+        KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+      - IndexName: BookIndex
+        KeySchema:
+        - AttributeName: bookId
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST
+  BookstoreApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: '''GET,POST,PUT,DELETE,OPTIONS'''
+        AllowHeaders: '''Content-Type,Authorization'''
+        AllowOrigin: '''*'''
+  GetBooksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetBooksFunction
+      Handler: getBooks.handler
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: BooksTable
+      Events:
+        GetBooks:
+          Type: Api
+          Properties:
+            Path: /books
+            Method: get
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: GetBooksFunction
+  GetBookByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetBookByIdFunction
+      Handler: getBookById.handler
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: BooksTable
+      Events:
+        GetBookById:
+          Type: Api
+          Properties:
+            Path: /books/{bookId}
+            Method: get
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: GetBookByIdFunction
+  SearchBooksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SearchBooksFunction
+      Handler: searchBooks.handler
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: BooksTable
+      Events:
+        SearchBooks:
+          Type: Api
+          Properties:
+            Path: /books/search
+            Method: get
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: SearchBooksFunction
+  GetBookReviewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetBookReviewsFunction
+      Handler: getBookReviews.handler
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: ReviewsTable
+      Events:
+        GetBookReviews:
+          Type: Api
+          Properties:
+            Path: /reviews/book/{bookId}
+            Method: get
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: GetBookReviewsFunction
+  AddReviewFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: AddReviewFunction
+      Handler: addReview.handler
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ReviewsTable
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: BooksTable
+      Environment:
+        Variables:
+          SES_FROM_EMAIL:
+            Ref: SESFromEmail
+      Events:
+        AddReview:
+          Type: Api
+          Properties:
+            Path: /reviews
+            Method: post
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: AddReviewFunction
+  AddToCartFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: AddToCartFunction
+      Handler: addToCart.handler
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ReservationsTable
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: BooksTable
+      Events:
+        AddToCart:
+          Type: Api
+          Properties:
+            Path: /cart
+            Method: post
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: AddToCartFunction
+  CreateReservationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CreateReservationFunction
+      Handler: createReservation.handler
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: ReservationsTable
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: BooksTable
+      - SESCrudPolicy:
+          IdentityName: temp@example.com
+      Environment:
+        Variables:
+          SES_FROM_EMAIL:
+            Ref: SESFromEmail
+      Events:
+        CreateReservation:
+          Type: Api
+          Properties:
+            Path: /reservations
+            Method: post
+            RestApiId:
+              Ref: BookstoreApi
+    Metadata:
+      SamResourceId: CreateReservationFunction
+Outputs:
+  ApiUrl:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${BookstoreApi}.execute-api.${AWS::Region}.amazonaws.com/prod
