@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ApiService from '../services/api.js';
 import { useAuth } from '../services/auth.jsx';
-import './BookDetail.css';
+import '../styles/BookDetail.css';
 
 function BookDetail() {
   const { bookId } = useParams();
