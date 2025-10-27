@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ApiService from '../services/api.jsx';
 import { useAuth } from '../services/auth.jsx';
-import './Cart.css';
+import '../styles/Cart.css';
 
 function Cart() {
   const [cartItems, setCartItems] = useState([]);

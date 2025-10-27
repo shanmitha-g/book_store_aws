@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ApiService from '../services/api.jsx';
-import './AdminDashboard.css';
+import '../styles/AdminDashboard.css';
 
 function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
