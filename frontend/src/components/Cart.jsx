@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApiService from '../services/api.jsx';
+import ApiService from '../services/api.js';
 import { useAuth } from '../services/auth.jsx';
 import '../styles/Cart.css';
 
