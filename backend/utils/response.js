@@ -1,4 +1,4 @@
-export function createResponse(statusCode, body, headers = {}) {
+function createResponse(statusCode, body, headers = {}) {
   const defaultHeaders = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -13,18 +13,26 @@ export function createResponse(statusCode, body, headers = {}) {
   };
 }
 
-export function success(body, statusCode = 200) {
+function success(body, statusCode = 200) {
   return createResponse(statusCode, body);
 }
 
-export function error(message, statusCode = 400) {
+function error(message, statusCode = 400) {
   return createResponse(statusCode, { error: message });
 }
 
-export function unauthorized(message = 'Unauthorized') {
+function unauthorized(message = 'Unauthorized') {
   return createResponse(401, { error: message });
 }
 
-export function forbidden(message = 'Forbidden') {
+function forbidden(message = 'Forbidden') {
   return createResponse(403, { error: message });
 }
+
+module.exports = {
+  createResponse,
+  success,
+  error,
+  unauthorized,
+  forbidden
+};

@@ -29,6 +29,15 @@ export function AuthProvider({ children }) {
 
   const checkAuthState = async () => {
     try {
+
+const demoUser = localStorage.getItem('cognitoUser');
+    if (demoUser) {
+      const userData = JSON.parse(demoUser);
+      setUser(userData);
+      setIsLoading(false);
+      return;
+    }
+
       const cognitoUser = userPool.getCurrentUser();
       
       if (cognitoUser) {
@@ -123,6 +132,7 @@ export function AuthProvider({ children }) {
     isAdmin: isAdmin,
     token: 'demo-token'
   };
+  localStorage.setItem('cognitoUser', JSON.stringify(userData));
   setUser(userData);
   return Promise.resolve(userData);
 };
@@ -161,6 +171,7 @@ export function AuthProvider({ children }) {
     if (cognitoUser) {
       cognitoUser.signOut();
     }
+    localStorage.removeItem('cognitoUser');
     setUser(null);
   };
 

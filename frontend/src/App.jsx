@@ -8,8 +8,12 @@ import BookList from './components/BookList';
 import BookDetail from './components/BookDetail';
 import Cart from './components/Cart';
 import Reviews from './components/Reviews';
+import DemoAdminDashboard from './components/DemoAdminDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import './styles/App.css';
+
+
+const DEMO_MODE = true;
 
 function AppContent() {
   const { user, isLoading } = useAuth();
@@ -34,7 +38,7 @@ function AppContent() {
           <Route path="/book/:bookId" element={<BookDetail />} />
           <Route path="/cart" element={user ? <Cart /> : <Navigate to="/login" />} />
           <Route path="/reviews" element={<Reviews />} />
-          <Route path="/admin" element={user?.isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
+          <Route path="/admin" element={DEMO_MODE ? <DemoAdminDashboard /> : (user?.isAdmin ? <AdminDashboard /> : <Navigate to="/" />)} />
         </Routes>
       </main>
     </div>

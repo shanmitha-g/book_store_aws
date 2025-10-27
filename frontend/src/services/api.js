@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
-const API_BASE_URL = 'https://main.dpw9y4sxk7dy6.amplifyapp.com';
+const API_BASE_URL = 'https://mqm0a25hy5.execute-api.us-east-1.amazonaws.com/prod';
 
 class ApiService {
   constructor() {

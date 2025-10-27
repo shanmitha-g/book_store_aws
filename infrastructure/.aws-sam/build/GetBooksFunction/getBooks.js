@@ -1,5 +1,7 @@
-import { Database } from '../../utils/dynamodb.js';
-import { success, error } from '../../utils/response.js';
+//import { Database } from '../../utils/dynamodb.js';
+//import { success, error } from '../../utils/response.js';
+const { Database } = require('../../utils/dynamodb.js');
+const { success, error } = require('../../utils/response.js');
 
 export const handler = async (event) => {
   try {
