@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ApiService from '../services/api.jsx';
+import ApiService from '../services/api.js';
 import '../styles/AdminDashboard.css';
 
 function AdminDashboard() {
