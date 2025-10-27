@@ -113,6 +113,19 @@ export function AuthProvider({ children }) {
       });
     });
   };
+  
+  const demoLogin = (email, isAdmin = false) => {
+  const userData = {
+    username: email,
+    email: email,
+    firstName: 'Demo',
+    lastName: 'User',
+    isAdmin: isAdmin,
+    token: 'demo-token'
+  };
+  setUser(userData);
+  return Promise.resolve(userData);
+};
 
   const register = async (email, password, firstName, lastName, userType) => {
     return new Promise((resolve, reject) => {
@@ -156,6 +169,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    demoLogin,
     isLoading
   };
 
