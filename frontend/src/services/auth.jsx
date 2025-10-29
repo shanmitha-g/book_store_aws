@@ -35,14 +35,6 @@ export function AuthProvider({ children }) {
   const checkAuthState = async () => {
     try {
 
-const demoUser = localStorage.getItem('cognitoUser');
-    if (demoUser) {
-      const userData = JSON.parse(demoUser);
-      setUser(userData);
-      setIsLoading(false);
-      return;
-    }
-
       const cognitoUser = userPool.getCurrentUser();
       
       if (cognitoUser) {
@@ -127,20 +119,6 @@ const demoUser = localStorage.getItem('cognitoUser');
       });
     });
   };
-  
-  const demoLogin = (email, isAdmin = false) => {
-  const userData = {
-    username: email,
-    email: email,
-    firstName: 'Demo',
-    lastName: 'User',
-    isAdmin: isAdmin,
-    token: 'demo-token'
-  };
-  localStorage.setItem('cognitoUser', JSON.stringify(userData));
-  setUser(userData);
-  return Promise.resolve(userData);
-};
 
   const register = async (email, password, firstName, lastName, userType) => {
     return new Promise((resolve, reject) => {
@@ -185,7 +163,6 @@ const demoUser = localStorage.getItem('cognitoUser');
     login,
     register,
     logout,
-    demoLogin,
     isLoading
   };
 
