@@ -120,6 +120,40 @@ export function AuthProvider({ children }) {
     });
   };
 
+  const verifyEmail = (email, code) => {
+  return new Promise((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+
+    cognitoUser.confirmRegistration(code, true, (err, result) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(result);
+    });
+  });
+};
+
+const resendVerificationCode = (email) => {
+  return new Promise((resolve, reject) => {
+    const cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: userPool,
+    });
+
+    cognitoUser.resendConfirmationCode((err, result) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(result);
+    });
+  });
+};
+
   const register = async (email, password, firstName, lastName, userType) => {
     return new Promise((resolve, reject) => {
       userPool.signUp(
@@ -163,6 +197,8 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    verifyEmail,           
+    resendVerificationCode, 
     isLoading
   };
 

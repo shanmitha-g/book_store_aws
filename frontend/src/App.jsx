@@ -10,6 +10,7 @@ import Cart from './components/Cart';
 import Reviews from './components/Reviews';
 import AdminDashboard from './components/AdminDashboard';
 import './styles/App.css';
+import VerifyEmail from './components/VerifyEmail';
 
 function AppContent() {
   const { user, isLoading } = useAuth();
@@ -35,6 +36,7 @@ function AppContent() {
           <Route path="/cart" element={user ? <Cart /> : <Navigate to="/login" />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/admin" element={user?.isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
         </Routes>
       </main>
     </div>
