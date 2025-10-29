@@ -83,7 +83,7 @@ function Login() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  const { login, demoLogin } = useAuth();  // Add demoLogin here
+  const { login } = useAuth();  // Add demoLogin here
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -102,17 +102,7 @@ function Login() {
       await login(formData.email, formData.password);
       navigate('/');
     } catch (err) {
-      console.log('Login failed, using demo mode:', err);
-      
-      // Demo mode fallback
-      const isAdmin = formData.email.includes('admin');
-      await demoLogin(formData.email, isAdmin);
-      
-      if (isAdmin) {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+      setError(err.message || 'Login failed'); 
     } finally {
       setIsLoading(false);
     }
