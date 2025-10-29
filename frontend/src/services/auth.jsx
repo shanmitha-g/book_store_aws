@@ -5,10 +5,15 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cogn
   UserPoolId: process.env.REACT_APP_USER_POOL_ID,
   ClientId: process.env.REACT_APP_CLIENT_ID
 };*/
-
+/*
 const poolData = {
   UserPoolId: 'us-east-1_wRsIhvNoQ',      // Your actual ID
   ClientId: 'clccm3iqk4f9eaq7ru1r1q4f7'   // Your actual Client ID
+};*/
+
+const poolData = {
+  UserPoolId: 'us-east-1_BzVkNkINx',      // Your actual ID
+  ClientId: '4kuq4fe5b5mivvg29r0027hd6j'   // Your actual Client ID
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -29,6 +34,15 @@ export function AuthProvider({ children }) {
 
   const checkAuthState = async () => {
     try {
+
+const demoUser = localStorage.getItem('cognitoUser');
+    if (demoUser) {
+      const userData = JSON.parse(demoUser);
+      setUser(userData);
+      setIsLoading(false);
+      return;
+    }
+
       const cognitoUser = userPool.getCurrentUser();
       
       if (cognitoUser) {
@@ -123,6 +137,7 @@ export function AuthProvider({ children }) {
     isAdmin: isAdmin,
     token: 'demo-token'
   };
+  localStorage.setItem('cognitoUser', JSON.stringify(userData));
   setUser(userData);
   return Promise.resolve(userData);
 };
@@ -161,6 +176,7 @@ export function AuthProvider({ children }) {
     if (cognitoUser) {
       cognitoUser.signOut();
     }
+    localStorage.removeItem('cognitoUser');
     setUser(null);
   };
 
