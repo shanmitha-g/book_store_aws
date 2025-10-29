@@ -32,7 +32,7 @@ function Register() {
     try {
       await register(formData.email, formData.password, formData.firstName, formData.lastName, formData.userType);
       //navigate('/login');
-      navigate('/verify-email', { state: { email } });
+      navigate('/verify-email', { state: { email: email } });
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {

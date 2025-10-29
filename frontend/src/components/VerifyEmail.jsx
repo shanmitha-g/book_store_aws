@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../services/auth.jsx';
+import '../styles/VerifyEmail.css';
 
 function VerifyEmail() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { verifyEmail, resendVerificationCode } = useAuth();
+  
+  // Get email from navigation state or use empty string
+  const initialEmail = location.state?.email || '';
+  const [email, setEmail] = useState(initialEmail);
   const [code, setCode] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { verifyEmail, resendVerificationCode } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-  
-  // Get email from navigation state or prompt user
-  const email = location.state?.email || '';
 
   const handleVerify = async (e) => {
     e.preventDefault();
-    if (!code) {
+    
+    if (!email.trim()) {
+      setMessage('Please enter your email address');
+      return;
+    }
+    if (!code.trim()) {
       setMessage('Please enter verification code');
       return;
     }
@@ -33,7 +40,7 @@ function VerifyEmail() {
   };
 
   const handleResendCode = async () => {
-    if (!email) {
+    if (!email.trim()) {
       setMessage('Please enter your email address');
       return;
     }
@@ -55,18 +62,16 @@ function VerifyEmail() {
       <p>We sent a verification code to your email. Please enter it below.</p>
       
       <form onSubmit={handleVerify}>
-        {!email && (
-          <div className="form-group">
-            <label>Email Address:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-        )}
+        <div className="form-group">
+          <label>Email Address:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+          />
+        </div>
         
         <div className="form-group">
           <label>Verification Code:</label>
@@ -84,7 +89,12 @@ function VerifyEmail() {
         </button>
       </form>
 
-      <button onClick={handleResendCode} disabled={isLoading} className="resend-btn">
+      <button 
+        onClick={handleResendCode} 
+        disabled={isLoading} 
+        className="resend-btn"
+        type="button"
+      >
         Resend Verification Code
       </button>
 
