@@ -24,7 +24,7 @@ function Register() {
     });
   };
 
-  const handleSubmit = async (e) => {
+ /* const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
@@ -38,7 +38,28 @@ function Register() {
     } finally {
       setIsLoading(false);
     }
-  };
+  };*/
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setIsLoading(true);
+
+  try {
+    console.log('🟡 Starting registration with:', formData);
+    const result = await register(formData.email, formData.password, formData.firstName, formData.lastName, formData.userType);
+    console.log('🟢 Registration successful:', result);
+    console.log('🟢 Redirecting to verify-email...');
+    navigate('/verify-email', { state: { email: formData.email } });
+  } catch (err) {
+    console.log('🔴 Registration ERROR:', err);
+    console.log('🔴 Error message:', err.message);
+    console.log('🔴 Error stack:', err.stack);
+    setError(err.message || 'Registration failed');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="auth-container">
