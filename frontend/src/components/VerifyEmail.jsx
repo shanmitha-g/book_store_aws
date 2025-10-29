@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from './services/auth.jsx';
+import { useAuth } from '../services/auth.jsx';
 
 function VerifyEmail() {
   const [code, setCode] = useState('');
