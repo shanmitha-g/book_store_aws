@@ -31,7 +31,8 @@ function Register() {
 
     try {
       await register(formData.email, formData.password, formData.firstName, formData.lastName, formData.userType);
-      navigate('/login');
+      //navigate('/login');
+      navigate('/verify-email', { state: { email } });
     } catch (err) {
       setError(err.message || 'Registration failed');
     } finally {
