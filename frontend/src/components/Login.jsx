@@ -93,6 +93,7 @@ function Login() {
     });
   };
 
+  /*
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -106,7 +107,26 @@ function Login() {
     } finally {
       setIsLoading(false);
     }
-  };
+  };*/
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setIsLoading(true);
+
+  try {
+    const userData = await login(formData.email, formData.password);
+    // Redirect based on user role
+    if (userData.isAdmin) {
+      navigate('/admin');
+    } else {
+      navigate('/');
+    }
+  } catch (err) {
+    setError(err.message || 'Login failed');
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 
   return (
