@@ -4,9 +4,11 @@ Parameters:
   UserPoolId:
     Type: String
     Description: Cognito User Pool ID
+    Default: us-east-1_BzVkNkINx
   UserPoolClientId:
     Type: String
     Description: Cognito App Client ID
+    Default: 4kuq4fe5b5mivvg29r0027hd6j
   SESFromEmail:
     Type: String
     Description: SES verified email address
@@ -22,7 +24,7 @@ Resources:
   BooksTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: Books
+      TableName: Books-v2
       AttributeDefinitions:
       - AttributeName: bookId
         AttributeType: S
@@ -42,7 +44,7 @@ Resources:
   ReviewsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: Reviews
+      TableName: Reviews-v2
       AttributeDefinitions:
       - AttributeName: reviewId
         AttributeType: S
@@ -70,7 +72,7 @@ Resources:
   ReservationsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: Reservations
+      TableName: Reservations-v2
       AttributeDefinitions:
       - AttributeName: reservationId
         AttributeType: S

@@ -1,0 +1,83 @@
+{
+    "Items": [
+        {
+            "imageUrl": {
+                "S": ""
+            },
+            "averageRating": {
+                "N": "4.6"
+            },
+            "bookId": {
+                "S": "B002"
+            },
+            "reviewCount": {
+                "N": "890"
+            },
+            "updatedAt": {
+                "S": "2025-10-26T19:49:38.623Z"
+            },
+            "createdAt": {
+                "S": "2025-10-26T19:49:38.623Z"
+            },
+            "stock": {
+                "N": "8"
+            },
+            "price": {
+                "N": "11.99"
+            },
+            "description": {
+                "S": "In a dystopian future, a young girl volunteers to take her sister's place in a deadly televised competition."
+            },
+            "genre": {
+                "S": "Science Fiction"
+            },
+            "author": {
+                "S": "Suzanne Collins"
+            },
+            "title": {
+                "S": "The Hunger Games"
+            }
+        },
+        {
+            "imageUrl": {
+                "S": ""
+            },
+            "averageRating": {
+                "N": "4.8"
+            },
+            "bookId": {
+                "S": "B001"
+            },
+            "reviewCount": {
+                "N": "1250"
+            },
+            "updatedAt": {
+                "S": "2025-10-26T19:49:38.623Z"
+            },
+            "createdAt": {
+                "S": "2025-10-26T19:49:38.622Z"
+            },
+            "stock": {
+                "N": "15"
+            },
+            "price": {
+                "N": "12.99"
+            },
+            "description": {
+                "S": "A young wizard discovers his magical heritage and begins his education at Hogwarts School of Witchcraft and Wizardry."
+            },
+            "genre": {
+                "S": "Fantasy"
+            },
+            "author": {
+                "S": "J.K. Rowling"
+            },
+            "title": {
+                "S": "Harry Potter and the Sorcerer's Stone"
+            }
+        }
+    ],
+    "Count": 2,
+    "ScannedCount": 2,
+    "ConsumedCapacity": null
+}
