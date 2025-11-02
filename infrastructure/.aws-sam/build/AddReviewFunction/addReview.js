@@ -1,8 +1,8 @@
-import { Database } from '../../utils/dynamodb.js';
-import { ComprehendClient, DetectSentimentCommand, DetectKeyPhrasesCommand } from '@aws-sdk/client-comprehend';
-import { verifyToken } from '../../utils/auth.js';
-import { success, error, unauthorized } from '../../utils/response.js';
-import { v4 as uuidv4 } from 'uuid';
+const { Database } = require('../../utils/dynamodb.js');
+const { ComprehendClient, DetectSentimentCommand, DetectKeyPhrasesCommand } = require('@aws-sdk/client-comprehend');
+const { verifyToken } = require('../../utils/auth.js');
+const { success, error, unauthorized } = require('../../utils/response.js');
+const { v4: uuidv4 } = require('uuid');
 
 const comprehend = new ComprehendClient({ region: process.env.AWS_REGION });
 

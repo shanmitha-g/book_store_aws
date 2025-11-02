@@ -1,8 +1,8 @@
-import { Database } from '../../utils/dynamodb.js';
-import { verifyToken } from '../../utils/auth.js';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { success, error, unauthorized } from '../../utils/response.js';
-import { v4 as uuidv4 } from 'uuid';
+const { Database } = require('../../utils/dynamodb.js');
+const { verifyToken } = require('../../utils/auth.js');
+const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
+const { success, error, unauthorized } = require('../../utils/response.js');
+const { v4: uuidv4 } = require('uuid');
 
 const ses = new SESClient({ region: process.env.AWS_REGION });
 

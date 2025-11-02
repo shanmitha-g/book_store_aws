@@ -1,6 +1,6 @@
-import { Database } from '../../utils/dynamodb.js';
-import { success, error } from '../../utils/response.js';
-
+const { Database } = require('../../utils/dynamodb.js');
+const { success, error } = require('../../utils/response.js');
+// Force deployment - converted imports to require
 export const handler = async (event) => {
   try {
     const queryParams = event.queryStringParameters || {};

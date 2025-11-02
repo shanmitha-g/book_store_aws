@@ -1,10 +1,10 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, ScanCommand, QueryCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, ScanCommand, QueryCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({ region: process.env.AWS_REGION || 'us-east-1' });
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
-export class Database {
+class Database {
   static async scan(tableName, filters = {}) {
     const params = {
       TableName: tableName,
@@ -133,3 +133,4 @@ export class Database {
     }
   }
 }
+module.exports = { Database };

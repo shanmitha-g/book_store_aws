@@ -1,8 +1,8 @@
-import jwt from 'jsonwebtoken';
-import jwksClient from 'jwks-rsa';
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
 
 const client = jwksClient({
-  jwksUri: `https://cognito-idp.${process.env.AWS_REGION}.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`
+  jwksUri: `https://cognito-idp.us-east-1.amazonaws.com/${process.env.USER_POOL_ID}/.well-known/jwks.json`
 });
 
 function getKey(header, callback) {
@@ -12,7 +12,7 @@ function getKey(header, callback) {
   });
 }
 
-export async function verifyToken(token) {
+async function verifyToken(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, getKey, {}, (err, decoded) => {
       if (err) {
@@ -24,7 +24,9 @@ export async function verifyToken(token) {
   });
 }
 
-export function checkAdmin(decodedToken) {
+function checkAdmin(decodedToken) {
   const groups = decodedToken['cognito:groups'] || [];
   return groups.includes('Admins');
 }
+
+module.exports = { verifyToken, checkAdmin };
