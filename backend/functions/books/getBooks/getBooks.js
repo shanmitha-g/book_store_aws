@@ -1,6 +1,6 @@
 const { Database } = require('../../utils/dynamodb.js');
 const { success, error } = require('../../utils/response.js');
-// Force deployment - converted imports to require
+// Force deployment - converted imports to require is done
 export const handler = async (event) => {
   try {
     const queryParams = event.queryStringParameters || {};
@@ -21,7 +21,7 @@ export const handler = async (event) => {
       });
     } else {
       // Get all books
-      books = await Database.scan('Books');
+      books = await Database.scan('Books-v2');
     }
 
     return success(books);
