@@ -9,7 +9,7 @@ export const handler = async (event) => {
       return error('Search query is required');
     }
 
-    const books = await Database.scan('Books', {
+    const books = await Database.scan('Books-v2', {
       expression: 'contains(title, :query) OR contains(author, :query) OR contains(description, :query)',
       values: { ':query': query }
     });

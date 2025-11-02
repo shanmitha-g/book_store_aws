@@ -9,7 +9,7 @@ export const handler = async (event) => {
       return error('Book ID is required');
     }
 
-    const reviews = await Database.query('Reviews', {
+    const reviews = await Database.query('Reviews-v2', {
       expression: 'bookId = :bookId',
       values: { ':bookId': bookId }
     }, { index: 'BookIndex' });

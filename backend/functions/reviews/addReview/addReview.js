@@ -25,7 +25,7 @@ export const handler = async (event) => {
     }
 
     // Verify book exists
-    const book = await Database.get('Books', { bookId });
+    const book = await Database.get('Books-v2', { bookId });
     if (!book) {
       return error('Book not found', 404);
     }
@@ -61,7 +61,7 @@ export const handler = async (event) => {
       updatedAt: new Date().toISOString()
     };
 
-    await Database.put('Reviews', review);
+    await Database.put('Reviews-v2', review);
 
     // Update book's average rating
     const bookReviews = await Database.query('Reviews', {
@@ -71,7 +71,7 @@ export const handler = async (event) => {
 
     const newAverageRating = bookReviews.reduce((sum, r) => sum + r.rating, 0) / bookReviews.length;
     
-    await Database.update('Books', { bookId }, {
+    await Database.update('Books-v2', { bookId }, {
       averageRating: Math.round(newAverageRating * 10) / 10,
       reviewCount: bookReviews.length
     });

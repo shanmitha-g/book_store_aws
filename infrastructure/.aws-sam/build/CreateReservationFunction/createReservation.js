@@ -18,7 +18,7 @@ export const handler = async (event) => {
     const userEmail = decoded.email;
 
     // Get cart items
-    const cartItems = await Database.query('Reservations', {
+    const cartItems = await Database.query('Reservations-v2', {
       expression: 'userId = :userId AND begins_with(reservationId, :cart)',
       values: { 
         ':userId': userId,
@@ -38,19 +38,19 @@ export const handler = async (event) => {
     let totalAmount = 0;
 
     for (const item of activeCartItems) {
-      const book = await Database.get('Books', { bookId: item.bookId });
+      const book = await Database.get('Books-v2', { bookId: item.bookId });
       
       if (!book || book.stock < item.quantity) {
         return error(`Insufficient stock for ${book?.title || 'book'}`);
       }
 
       // Update book stock
-      await Database.update('Books', { bookId: item.bookId }, {
+      await Database.update('Books-v2', { bookId: item.bookId }, {
         stock: book.stock - item.quantity
       });
 
       // Update cart item to reserved
-      await Database.update('Reservations', 
+      await Database.update('Reservations-v2', 
         { reservationId: item.reservationId }, 
         { 
           status: 'reserved',

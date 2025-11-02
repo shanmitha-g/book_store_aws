@@ -9,13 +9,13 @@ export const handler = async (event) => {
     
     if (queryParams.genre) {
       // Query by genre using GSI
-      books = await Database.query('Books', {
+      books = await Database.query('Books-v2', {
         expression: 'genre = :genre',
         values: { ':genre': queryParams.genre }
       }, { index: 'GenreIndex' });
     } else if (queryParams.author) {
       // Scan with author filter
-      books = await Database.scan('Books', {
+      books = await Database.scan('Books-v2', {
         expression: 'contains(author, :author)',
         values: { ':author': queryParams.author }
       });

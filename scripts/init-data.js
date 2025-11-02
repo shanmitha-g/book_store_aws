@@ -41,7 +41,7 @@ async function initializeData() {
     
     for (const book of sampleBooks) {
       const params = {
-        TableName: 'Books',
+        TableName: 'Books-v2',
         Item: book
       };
       

@@ -239,7 +239,7 @@ export const handler = async (event) => {
     }
 
     // Verify book exists and has stock
-    const book = await Database.get('Books', { bookId });
+    const book = await Database.get('Books-v2', { bookId });
     if (!book) {
       return {
         statusCode: 404,
@@ -257,7 +257,7 @@ export const handler = async (event) => {
     }
 
     // Use scan to find existing cart items
-    const existingItems = await Database.scan('Reservations', {
+    const existingItems = await Database.scan('Reservations-v2', {
       expression: 'userId = :userId AND bookId = :bookId AND #status = :status AND begins_with(reservationId, :cart)',
       values: { 
         ':userId': userId,

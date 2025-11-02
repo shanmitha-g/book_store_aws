@@ -9,7 +9,7 @@ export const handler = async (event) => {
       return error('Book ID is required');
     }
 
-    const book = await Database.get('Books', { bookId });
+    const book = await Database.get('Books-v2', { bookId });
     
     if (!book) {
       return error('Book not found', 404);
