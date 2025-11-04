@@ -29,26 +29,38 @@ function BookList() {
     setLoading(true);
     const response = await ApiService.getBooks();
 
-    // Extract the data array
-    const rawBooks = response.data.data || [];
+    console.log("🧩 Raw API Response:", response);
 
-    // Transform DynamoDB style objects to normal JS objects
+    // Try to find the data array in different possible places
+    let rawBooks = [];
+
+    if (Array.isArray(response.data)) {
+      rawBooks = response.data;
+    } else if (Array.isArray(response.data?.data)) {
+      rawBooks = response.data.data;
+    } else if (Array.isArray(response.data?.body?.data)) {
+      rawBooks = response.data.body.data;
+    } else {
+      console.warn("⚠️ Could not find data array in API response");
+    }
+
+    console.log("📦 Extracted rawBooks:", rawBooks);
+
     const booksArray = rawBooks.map(book => ({
-      bookId: book.bookId.S,
-      title: book.title.S,
-      author: book.author.S,
-      genre: book.genre.S,
-      description: book.description.S,
-      imageUrl: book.imageUrl.S,
-      averageRating: book.averageRating.N,
-      reviewCount: book.reviewCount.N,
-      stock: book.stock.N,
-      price: book.price.N,
+      bookId: book.bookId?.S || "",
+      title: book.title?.S || "",
+      author: book.author?.S || "",
+      genre: book.genre?.S || "",
+      description: book.description?.S || "",
+      imageUrl: book.imageUrl?.S || "",
+      averageRating: book.averageRating?.N || "",
+      reviewCount: book.reviewCount?.N || "",
+      stock: book.stock?.N || "",
+      price: book.price?.N || ""
     }));
 
-    setBooks(booksArray);
     console.log("📚 Transformed Books from API:", booksArray);
-
+    setBooks(booksArray);
   } catch (err) {
     setError('Failed to load books');
     console.error('Error fetching books:', err);
@@ -56,6 +68,7 @@ function BookList() {
     setLoading(false);
   }
 };
+
 
 
   const filterBooks = () => {
