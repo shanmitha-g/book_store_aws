@@ -47,6 +47,8 @@ function BookList() {
     }));
 
     setBooks(booksArray);
+    console.log("📚 Transformed Books from API:", booksArray);
+
   } catch (err) {
     setError('Failed to load books');
     console.error('Error fetching books:', err);
