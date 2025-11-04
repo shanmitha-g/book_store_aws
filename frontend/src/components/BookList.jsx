@@ -25,17 +25,36 @@ function BookList() {
   }, [books, filters]);
 
   const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      const bookData = await ApiService.getBooks();
-      setBooks(bookData);
-    } catch (err) {
-      setError('Failed to load books');
-      console.error('Error fetching books:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    const response = await ApiService.getBooks();
+
+    // Extract the data array
+    const rawBooks = response.data.data || [];
+
+    // Transform DynamoDB style objects to normal JS objects
+    const booksArray = rawBooks.map(book => ({
+      bookId: book.bookId.S,
+      title: book.title.S,
+      author: book.author.S,
+      genre: book.genre.S,
+      description: book.description.S,
+      imageUrl: book.imageUrl.S,
+      averageRating: book.averageRating.N,
+      reviewCount: book.reviewCount.N,
+      stock: book.stock.N,
+      price: book.price.N,
+    }));
+
+    setBooks(booksArray);
+  } catch (err) {
+    setError('Failed to load books');
+    console.error('Error fetching books:', err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const filterBooks = () => {
     let filtered = books;
@@ -73,7 +92,10 @@ function BookList() {
     }
   };
 
-  const genres = [...new Set(books.map(book => book.genre))];
+  const genres = Array.isArray(books)
+  ? [...new Set(books.map(book => book.genre))]
+  : [];
+
 
   if (loading) {
     return (
@@ -131,18 +153,16 @@ function BookList() {
 
       {/* Books Grid */}
       <div className="books-grid">
-        {filteredBooks.map(book => (
+        {Array.isArray(filteredBooks) && filteredBooks.map((book) => (
           <div key={book.bookId} className="book-card">
             <div className="book-image">
               {book.imageUrl ? (
                 <img src={book.imageUrl} alt={book.title} />
               ) : (
-                <div className="book-image-placeholder">
-                  📖
-                </div>
+                <div className="book-image-placeholder">📖</div>
               )}
             </div>
-            
+
             <div className="book-content">
               <h3 className="book-title">{book.title}</h3>
               <p className="book-author">by {book.author}</p>
@@ -150,7 +170,7 @@ function BookList() {
               <p className="book-description">
                 {book.description?.substring(0, 100)}...
               </p>
-              
+
               <div className="book-meta">
                 <div className="book-rating">
                   ⭐ {book.averageRating || 'No ratings'}
