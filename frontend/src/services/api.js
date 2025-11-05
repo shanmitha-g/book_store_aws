@@ -81,7 +81,7 @@ class ApiService {
   }
 
   async addToCart(bookId, quantity = 1) {
-    const response = await this.client.post('/cart/add', { bookId, quantity });
+    const response = await this.client.post('/cart/', { bookId, quantity });
     return response.data;
   }
 
