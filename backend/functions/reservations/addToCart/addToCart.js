@@ -187,7 +187,7 @@ export const handler = async (event) => {
 
 
 
-const { Database } = require('../../utils/dynamodb.js');
+const { Database } = require('./utils/dynamodb.js');
 const { verifyToken } = require('../../utils/auth.js');
 const { success, error, unauthorized } = require('../../utils/response.js');
 const { v4: uuidv4 } = require('uuid');
