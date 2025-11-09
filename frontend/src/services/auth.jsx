@@ -63,6 +63,12 @@ export function AuthProvider({ children }) {
             
             setUser(userData);
             setIsLoading(false);
+            localStorage.setItem("cognitoUser", JSON.stringify({
+  token: userData.token,
+  username: userData.username,
+  email: userData.email
+}));
+
           });
         });
       } else {
@@ -108,7 +114,13 @@ export function AuthProvider({ children }) {
               isAdmin: session.getIdToken().payload['cognito:groups']?.includes('Admins') || false,
               token: session.getIdToken().getJwtToken()
             };
-            
+            // Save token so Axios can include it
+localStorage.setItem("cognitoUser", JSON.stringify({
+  token: userData.token,
+  username: userData.username,
+  email: userData.email
+}));
+
             setUser(userData);
             resolve(userData);
           });
