@@ -14,10 +14,28 @@ function Cart() {
   useEffect(() => {
     fetchCart();
   }, []);
+   const fetchCart = async () => {
+  try {
+    setLoading(true);
 
-  const fetchCart = async () => {
+    const response = await ApiService.getCart();
+    console.log("Cart API response:", response);
+
+    const items = response.items || [];
+
+    setCartItems(items);
+  } catch (err) {
+    console.error("Error fetching cart:", err);
+    setError("Failed to load cart");
+  } finally {
+    setLoading(false);
+  }
+};
+
+  /*const fetchCart = async () => {
     try {
       // For now, we'll use mock data since the API might not be ready
+      /*
       const mockCartItems = [
         {
           reservationId: 'CART_001',
@@ -35,15 +53,18 @@ function Cart() {
           quantity: 2,
           bookPrice: 11.99
         }
-      ];
+      ];----
       setCartItems(mockCartItems);
+      const response = await ApiService.getCart();
+setCartItems(response.data || []);
+
     } catch (err) {
       setError('Failed to load cart');
       console.error('Error fetching cart:', err);
     } finally {
       setLoading(false);
     }
-  };
+  };*/
 
   const updateQuantity = (itemId, newQuantity) => {
     if (newQuantity < 1) return;
