@@ -16,21 +16,23 @@ function Cart() {
   }, []);
    const fetchCart = async () => {
   try {
-    setLoading(true);
-
     const response = await ApiService.getCart();
-    console.log("Cart API response:", response);
+    console.log("Cart API Response:", response);
 
-    const items = response.items || [];
-
-    setCartItems(items);
+    if (response.success) {
+      setCartItems(response.cart);
+    } else {
+      setError("Failed to load cart");
+    }
   } catch (err) {
-    console.error("Error fetching cart:", err);
     setError("Failed to load cart");
+    console.error("Error fetching cart:", err);
   } finally {
     setLoading(false);
   }
 };
+
+
 
   /*const fetchCart = async () => {
     try {
