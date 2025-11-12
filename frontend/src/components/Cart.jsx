@@ -68,23 +68,32 @@ setCartItems(response.data || []);
     }
   };*/
 
-  const updateQuantity = (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
-    
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.reservationId === itemId
-          ? { ...item, quantity: newQuantity }
-          : item
+  const updateQuantity = async (itemId, newQuantity) => {
+  if (newQuantity < 1) return;
+
+  try {
+    await ApiService.updateCartItem(itemId, newQuantity);
+    setCartItems(prev =>
+      prev.map(item =>
+        item.reservationId === itemId ? { ...item, quantity: newQuantity } : item
       )
     );
-  };
+  } catch (err) {
+    console.error("Error updating quantity:", err);
+    alert("Failed to update quantity");
+  }
+};
 
-  const removeItem = (itemId) => {
-    setCartItems(prevItems =>
-      prevItems.filter(item => item.reservationId !== itemId)
-    );
-  };
+const removeItem = async (itemId) => {
+  try {
+    await ApiService.removeFromCart(itemId);
+    setCartItems(prev => prev.filter(item => item.reservationId !== itemId));
+  } catch (err) {
+    console.error("Error removing item:", err);
+    alert("Failed to remove item");
+  }
+};
+
 
   const createReservation = async () => {
     if (!user) {
