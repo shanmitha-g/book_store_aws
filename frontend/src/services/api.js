@@ -100,6 +100,19 @@ class ApiService {
     const response = await this.client.put(`/admin/books/${bookId}/stock`, { stock });
     return response.data;
   }
+
+  // Update quantity
+async updateCartItem(reservationId, quantity) {
+  const response = await this.client.put('/cart', { reservationId, quantity });
+  return response.data;
+}
+
+// Remove item
+async removeFromCart(reservationId) {
+  const response = await this.client.delete('/cart', { data: { reservationId } });
+  return response.data;
+}
+
 }
 
 export default new ApiService();
