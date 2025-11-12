@@ -203,9 +203,9 @@ function BookList() {
               </div>
 
               <div className="book-actions">
-                <Link to={`/book/${book.bookId}`} className="btn btn-secondary">
+                {/*<Link to={`/book/${book.bookId}`} className="btn btn-secondary">
                   View Details
-                </Link>
+                </Link> */}
                 <button
                   onClick={() => handleAddToCart(book.bookId)}
                   disabled={book.stock === 0 || !user}
