@@ -21,7 +21,7 @@ function Navbar() {
         
         <div className="nav-menu">
           <Link to="/" className="nav-link">Books</Link>
-          <Link to="/reviews" className="nav-link">FAQs</Link>
+          <Link to="/faq" className="nav-link">FAQs</Link>
           
           {user ? (
             <>
