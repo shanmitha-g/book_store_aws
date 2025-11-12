@@ -11,6 +11,8 @@ import Reviews from './components/Reviews';
 import AdminDashboard from './components/AdminDashboard';
 import './styles/App.css';
 import VerifyEmail from './components/VerifyEmail';
+import FAQChatbot from "./components/FAQChatbot";
+
 
 function AppContent() {
   const { user, isLoading } = useAuth();
@@ -37,6 +39,7 @@ function AppContent() {
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/admin" element={user?.isAdmin ? <AdminDashboard /> : <Navigate to="/" />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/faq" element={<FAQChatbot />} />
         </Routes>
       </main>
     </div>
