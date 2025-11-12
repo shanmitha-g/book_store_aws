@@ -85,8 +85,8 @@ class ApiService {
     return response.data;
   }
 
-  async createReservation(reservationData) {
-    const response = await this.client.post('/reservations', reservationData);
+  async createReservation() {
+    const response = await this.client.post('/reservations');
     return response.data;
   }
 
