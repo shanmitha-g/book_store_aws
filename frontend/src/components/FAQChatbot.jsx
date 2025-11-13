@@ -159,9 +159,9 @@ function LexChatbot() {
     </div>
      );
 }
-export default LexChatbot;*/
+export default LexChatbot;
 
-
+-----------------------------------------------
 
 import React, { useEffect } from "react";
 
@@ -251,4 +251,82 @@ function LexChatbot() {
     </div>
   );
 }
+export default LexChatbot;
+*/
+
+
+
+
+import React, { useState } from "react";
+import { sendToLex } from "../services/lexservice";
+
+function LexChatbot() {
+  const [messages, setMessages] = useState([]);
+  const [input, setInput] = useState("");
+
+  const sendMsg = async () => {
+    if (!input.trim()) return;
+
+    const userMsg = { from: "user", text: input };
+    setMessages((prev) => [...prev, userMsg]);
+
+    const res = await sendToLex(input);
+    const botMsg = res[0]?.content || "No response";
+
+    setMessages((prev) => [...prev, { from: "bot", text: botMsg }]);
+    setInput("");
+  };
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Bookstore Assistant</h2>
+
+      <div
+        className="chat-window"
+        style={{
+          height: 400,
+          overflowY: "auto",
+          border: "1px solid #ccc",
+          padding: 10,
+          borderRadius: 8,
+          marginBottom: 10
+        }}
+      >
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            style={{
+              textAlign: msg.from === "user" ? "right" : "left",
+              marginBottom: 8
+            }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                padding: "8px 12px",
+                borderRadius: 12,
+                background: msg.from === "user" ? "#DCF8C6" : "#eee"
+              }}
+            >
+              {msg.text}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask something..."
+          style={{ padding: 8, width: "70%", marginRight: 10 }}
+        />
+        <button onClick={sendMsg} style={{ padding: "8px 20px" }}>
+          Send
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default LexChatbot;
