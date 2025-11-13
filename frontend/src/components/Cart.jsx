@@ -85,21 +85,25 @@ setCartItems(response.data || []);
                                  };
 
   const createReservation = async () => {
-    if (!user) {
-      alert('Please login to create reservation');
-      navigate('/login');
-      return;
-    }
+  if (!user) {
+    alert('Please login to create reservation');
+    navigate('/login');
+    return;
+  }
 
-    try {
-      // This would call your actual API
-      alert('Reservation feature coming soon! For now, this is a demo.');
-      console.log('Creating reservation with items:', cartItems);
-    } catch (err) {
-      alert('Failed to create reservation');
-      console.error('Error creating reservation:', err);
-    }
-  };
+  try {
+    const response = await ApiService.createReservation();
+    alert("Reservation successful! Check your email.");
+    
+    // clear UI
+    setCartItems([]);
+
+  } catch (err) {
+    alert("Failed to create reservation");
+    console.error("Reservation error:", err);
+  }
+};
+
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const totalAmount = cartItems.reduce((sum, item) => sum + (item.quantity * item.bookPrice), 0);
@@ -200,7 +204,7 @@ setCartItems(response.data || []);
                 onClick={createReservation}
                 className="btn btn-primary checkout-btn"
               >
-                Proceed to Reservation
+                Make Reservation
               </button>
               
               <button
