@@ -176,7 +176,7 @@ function LexChatbot() {
       // Step 2: Load Lex Web UI ONLY AFTER AWS SDK is ready
       const lexScript = document.createElement("script");
       // ✅ FIXED: Use working CDN URL
-      lexScript.src = "https://cdn.jsdelivr.net/npm/amazon-lex-web-ui@latest/dist/lex-web-ui.min.js";
+      lexScript.src = "https://d1g4f87g42dz4c.cloudfront.net/lex-web-ui-loader.min.js";
       lexScript.async = true;
 
       lexScript.onload = () => {
